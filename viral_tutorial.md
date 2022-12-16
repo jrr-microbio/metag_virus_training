@@ -174,7 +174,7 @@ The resulting parsed genome by genome overview will then contain the files that 
 
 Note: If you are trying to use this script to say more than just whether a virus has known taxonomy, the genome_category column can be leveraged to collate each cluster into “groups”. The way that you can use this is by adding more than just the two categories “this study” and “refseq_genome” into the possible options in the “genome_category” column. For example, if you have viruses from another ecosystem, and you are seeing if any of yours cluster to another system, add in a third category “ecosystem_2” to “genome_category”. The parsed output file will then tell you when a genome from “this study” will cluster to “ecosystem_2” or a “refseq_genome”.
 
-### Step 10: mapping reads to viruses
+### Step 7: mapping reads to viruses
 Similar to MAGs, we can also map metagenomic reads to viral genomes to determine coverage and relative abundance. This follows a very similar workflow as mapping to MAGs or genes, however there are some key differences. Here we include an example for mapping with bbmap, but the same workflow can be followed using bowtie (as was shown with mapping to MAGs). 
 
 First, map trimmed reads to a concatenated file of all viral contigs using bbmap: 
@@ -203,7 +203,7 @@ coverm contig --bam-files *_95id_sorted.bam -m covered_fraction -t 15 --min-cove
 coverm contig --bam-files *_95id_sorted.bam -m reads_per_base -t 15 &> coverm_reads-per-base_clustered.txt
 ```
 
-### Step 9: Make a master spreadsheet
+### Step 8: Make a master spreadsheet
 It is important to start generating a viral supplementary file early, as all of these files will be required upon publication. This is also very helpful for analyses to have much of the important information in one place. At this point, I usually start making a spreadsheet in excel that includes the following information:
 
 Tab 1: vMAG Summary: Virus genome ID, any viral ID renaming (sometimes this is helpful), genome average abundance, checkV scores and quality metrics from checkV output files, genome length, and viral taxonomy
@@ -212,7 +212,7 @@ Tab 3: AMG Summary/Distill output
 Tab 4: vMAG read mapping output
 
 
-Making host-viral linkages
+### Step 9: Making host-viral linkages
 Once you have a database of both recovered MAGs (host genomes) and recovered vMAGs (viral genomes), you can then attempt to make host-viral linkages. Since viruses depend on their hosts to proliferate, we can better understand the role that a viral population may have in the broader all microbial community if we understand which hosts they interact with. 
 
 There are two main approaches that we use to make connections between a MAG and a vMAG. These are (1) CRISPR based linkages, (2) consensus method using tools that consider oligonucleotide frequency and sequence similarity between hosts and viruses. Generally CRISPR based linkages are considered to be the strongest way to make host-viral linkages. The consensus method does not depend on hosts containing a CRISPR array and instead uses two (maybe even 3) different tools to determine likely virus-host linkages. For the consensus approach, we recommend  VirHostMatcher and PHIST. Additional tools that can be used include software like WiSH and VirHostMatcher-Net.
