@@ -158,7 +158,7 @@ Once you have the gene2genome csv file, you can run vContact2. Don’t worry too
 #Run actual vContact2 command
 vcontact2 -r renamed_DRAMv_genes.faa --rel-mode Diamond -p viral_genomes_g2g.csv --db ProkaryoticViralRefSeq211-Merged --pcs-mode MCL --vcs-mode ClusterONE --pc-evalue 0.0001 --reported-alignments 25 --max-overlap 0.8 --penalty 2.0 --haircut 0.1 --pc-inflation 2 --vc-inflation 2 --min-density 0.3 --min-size 2 --vc-overlap 0.9 --vc-penalty 2 --vc-haircut 0.55 --merge-method single --similarity match --seed-method nodes --sig 1 --max-sig 300 --mod-inflation 5 --mod-sig 1 --mod-shared-min 3 --link-sig 1 --link-prop 0.5 --c1-bin /opt/Miniconda2/miniconda2/envs/vContact2/bin/cluster_one-1.0.jar -o vContact2_output -t 15
 
-#deactivate the source - or close the terminal to return to your normal terminal.
+#deactivate the source (this will also happen automatically if you just close your terminal)
 source /opt/Miniconda2/miniconda2/bin/deactivate 
 ```
 
