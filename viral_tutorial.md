@@ -4,21 +4,15 @@ In this workshop, we will explain how to identify viral genomes (vMAGs) from met
 
 ## Viral Recovery and Identification
 
+To identify viral genomes within assemblies, we use a VirSorter2. Per their paper, VirSorter2 is “a DNA and RNA virus identification tool that leverages genome-informed database advances across a collection of customized automatic classifiers to improve the accuracy and range of virus sequence detection”. 
+
+Before using this tool, we need to do two things: (1) make sure assemblies are properly renamed and (2) pull only scaffolds of a certain length. 
+
+Important: VirSorter2 can also be used with metaT data to identify RNA viruses, however today we will focus on DNA viruses.
+
+## Step 1: Rename scaffolds in assemblies to include sample names
+This step helps in downstream analyses as identified viral genomes will already be named with the sample that they originated from. This has likely been done in previous steps, but if not, use a sed command to do so:
 
 ```
-#!/bin/bash
-#SBATCH --nodes=1
-#SBATCH --ntasks=2
-#SBATCH --time=14-00:00:00
-#SBATCH --mem=50gb
-#SBATCH --mail-type=BEGIN,END,FAIL
-#SBATCH --mail-user=<your email>
-#SBATCH --partition=wrighton-hi,wrighton-low
-
-cd ../raw_reads 
-# copy reads from ORG-DATA location 
-cp /home/ORG-Data-2/Agribiome/CURE_metaG_March2021/15_S10_L003_R* .
-# rename reads to sample name
-mv 15_S10_L003_R1_001.fastq.gz WCRC_304_R1.fastq.gz
-mv 15_S10_L003_R2_001.fastq.gz WCRC_304_R2.fastq.gz
+sed ‘s/>/>[new-name]/’ [assembly.fa] > [named-assembly.fa]
 ```
