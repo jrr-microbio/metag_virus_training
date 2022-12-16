@@ -279,7 +279,7 @@ Each row in the output file lists each spacer (column 1) that has hit to a virus
 Once you have filtered the BLAST output, you now have a list of host spacers that link to a virus, and thus host-virus linkages!
 
 ### Option 2: VirHostMatcher
-[VirHostMatcher]((https://academic.oup.com/nar/article/45/1/39/2605663) uses oligonucleotide frequency between a viral and host genome to determine if they infect each other. 
+[VirHostMatcher](https://academic.oup.com/nar/article/45/1/39/2605663) uses oligonucleotide frequency between a viral and host genome to determine if they infect each other. 
 
 To run VirHostMatcher, you create three different directories. One of them will contain all the viral genomes (i.e., “virus), one will contain all the bacterial / archaeal genomes (i.e., “host”), and the last will be an empty folder titled “output”. Note: For viral and host genomes, they need to be in a single .fasta file for each. So if you have 125 genomes, you will have 125 fasta files one with each genome.
 
