@@ -155,9 +155,11 @@ vcontact2_gene2genome -p renamed_DRAMv_genes.faa -o viral_genomes_g2g.csv -s 'Pr
 Once you have the gene2genome csv file, you can run vContact2. Don’t worry too much about these flags - these are default and recommended. The only thing that might change through time is “–db”. Right now, version 211 is the latest version of Viral Refseq. However, this gets updated somewhat often so keep an eye out.
 
 ```
+#Run actual vContact2 command
 vcontact2 -r renamed_DRAMv_genes.faa --rel-mode Diamond -p viral_genomes_g2g.csv --db ProkaryoticViralRefSeq211-Merged --pcs-mode MCL --vcs-mode ClusterONE --pc-evalue 0.0001 --reported-alignments 25 --max-overlap 0.8 --penalty 2.0 --haircut 0.1 --pc-inflation 2 --vc-inflation 2 --min-density 0.3 --min-size 2 --vc-overlap 0.9 --vc-penalty 2 --vc-haircut 0.55 --merge-method single --similarity match --seed-method nodes --sig 1 --max-sig 300 --mod-inflation 5 --mod-sig 1 --mod-shared-min 3 --link-sig 1 --link-prop 0.5 --c1-bin /opt/Miniconda2/miniconda2/envs/vContact2/bin/cluster_one-1.0.jar -o vContact2_output -t 15
 
-source /opt/Miniconda2/miniconda2/bin/deactivate #deactivate the source - or close the terminal to return to your normal terminal.
+#deactivate the source - or close the terminal to return to your normal terminal.
+source /opt/Miniconda2/miniconda2/bin/deactivate 
 ```
 
 The vContact2 file contains every single viral genome you gave as input, as well as every single viral genome that was added into the network as part of the tool. The column “VC” corresponds to “Viral Cluster”. If you sort by this column, everything that shares the same “VC” means they have enough protein content similarity to be considered a viral “genera”. If the virus shares a cluster ID with only viruses from your site of study, that cluster is considered a “novel viral genera” since they did not cluster with any of viral sequences in the known database. If the virus clusters with a virus from the RefSeq / Viral databases, then it is a “known taxonomy” virus that shares taxonomy with whatever genome it clustered to in the RefSeq database.  If there are multiple possibilities within a single known taxonomy cluster, the recommendation is usually to go with whatever the “majority” dictates.
