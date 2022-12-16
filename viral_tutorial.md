@@ -31,7 +31,7 @@ pullseq.py -i contigs.fa -m 10000 -o contigs_10000.fa
 In this command, we give pullseq our input assembly (-i contigs.fa) and require a minimum length of 10,000bp (-m 10000) and then write this to a new file (-o contigs_10000.fa). This is the file that you will provide VirSorter in the next step.
 Note: For best data management practice, delete the subsetted-assembly file (contigs_10000.fa) once you have run the following steps to identify viral genomes. You can re-pull contigs at any time if needed, and the output file will be the same.
 
-### Step 3: Virsorter2, checkV and DRAM-v for viral recovery and identification
+### Step 3: Virsorter2, CheckV and DRAM-v for viral recovery and identification
 
 To confidently identify contigs of viral nature we will use information provided by VirSorter2, CheckV, and DRAM-v through a series of steps. 
 
@@ -57,7 +57,7 @@ How might size and quality of metagenomes influence the recovery of vMAGs in thi
 Though we recommend using 10kb contigs, in some scenarios you may also want to consider including contigs >5kb 
 
 ### Step 4: Cluster vMAGs 95/85
-In an effort to standardize viral genome identification, the viral community got together to establish a consensus on best practices in a paper titled [Minimum Information about an Uncultivated Virus Genome (MIUViG)](https://www.nature.com/articles/nbt.4306). Within those rules, and much like you do for MAGs, we cluster the viral genomes to remove any duplicates. Viral clustering is done at 95% ANI across 85% of the shortest contig that is being compared - in other words, to cluster, a viral genome must be 95% similar across 85% of its genome to be considered the same viral population (i.e., vMAG). To do this, we will use some additional features that are included as part of [checkV](https://bitbucket.org/berkeleylab/checkv/src/master/) software. 
+In an effort to standardize viral genome identification, the viral community got together to establish a consensus on best practices in a paper titled [Minimum Information about an Uncultivated Virus Genome (MIUViG)](https://www.nature.com/articles/nbt.4306). Within those rules, and much like you do for MAGs, we cluster the viral genomes to remove any duplicates. Viral clustering is done at 95% ANI across 85% of the shortest contig that is being compared - in other words, to cluster, a viral genome must be 95% similar across 85% of its genome to be considered the same viral population (i.e., vMAG). To do this, we will use some additional features that are included as part of [CheckV](https://bitbucket.org/berkeleylab/checkv/src/master/) software. 
 
 First, create a blast+ database. This is part of the blastn package already installed on the server so you can just directly call this:
 
@@ -75,7 +75,7 @@ blastn -query final-viral-combined-for-dramv_nobadchars.fa -db my_db -outfmt '6 
 
 Notes: If you have more than 10,000 sequences, increase the -max_target_seqs number to more slightly above that number. “-outfmt 6” is a specific type of format that blastn can output. The headers for the output file will have this [format](https://www.metagenomics.wiki/tools/blast/blastn-output-format-6). The following flag “std” is the default order of outfmt 6 output. It then also specifies to give the query length and sequence length in addition to other values. 
  
-This next part is done by some custom scripts that are provided as part of the checkV download (but that aren’t installed on the server). You have to go in and download them from [here](https://bitbucket.org/berkeleylab/checkv/downloads/). Once you unzip that file, go into the “scripts” folder, and the two you need are anicalc.py and aniclust.py. Go ahead and copy those into a directory on the server where you have your unclustered viral genomes. After copying them, make sure that permissions are set to read/execute (run: chmod 777 anicalc.py ; chmod 777 aniclust.py) and then calculate pairwise ANI by combining local alignments between sequence pairs:
+This next part is done by some custom scripts that are provided as part of the CheckV download (but that aren’t installed on the server). You have to go in and download them from [here](https://bitbucket.org/berkeleylab/checkv/downloads/). Once you unzip that file, go into the “scripts” folder, and the two you need are anicalc.py and aniclust.py. Go ahead and copy those into a directory on the server where you have your unclustered viral genomes. After copying them, make sure that permissions are set to read/execute (run: chmod 777 anicalc.py ; chmod 777 aniclust.py) and then calculate pairwise ANI by combining local alignments between sequence pairs:
 
 ```
 python anicalc.py -i my_blast.tsv -o my_ani.tsv
