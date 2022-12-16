@@ -75,7 +75,9 @@ blastn -query final-viral-combined-for-dramv_nobadchars.fa -db my_db -outfmt '6 
 
 Notes: If you have more than 10,000 sequences, increase the -max_target_seqs number to more slightly above that number. “-outfmt 6” is a specific type of format that blastn can output. The headers for the output file will have this [format](https://www.metagenomics.wiki/tools/blast/blastn-output-format-6). The following flag “std” is the default order of outfmt 6 output. It then also specifies to give the query length and sequence length in addition to other values. 
  
-This next part is done by some custom scripts that are provided as part of the CheckV download (but that aren’t installed on the server). You have to go in and download them from [here](https://bitbucket.org/berkeleylab/checkv/downloads/). Once you unzip that file, go into the “scripts” folder, and the two you need are anicalc.py and aniclust.py. Go ahead and copy those into a directory on the server where you have your unclustered viral genomes. After copying them, make sure that permissions are set to read/execute (run: chmod 777 anicalc.py ; chmod 777 aniclust.py) and then calculate pairwise ANI by combining local alignments between sequence pairs:
+This next part is done by some custom scripts that are provided as part of the CheckV download (but that aren’t installed on the server). You have to go in and download them from [here](https://bitbucket.org/berkeleylab/checkv/downloads/). Once you unzip that file, go into the “scripts” folder, and the two you need are anicalc.py and aniclust.py. Go ahead and copy those into a directory on the server where you have your unclustered viral genomes. 
+
+After copying them, make sure that permissions are set to read/execute (run: chmod 777 anicalc.py ; chmod 777 aniclust.py) and then calculate pairwise ANI by combining local alignments between sequence pairs:
 
 ```
 python anicalc.py -i my_blast.tsv -o my_ani.tsv
