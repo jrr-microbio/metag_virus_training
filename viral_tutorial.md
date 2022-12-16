@@ -46,7 +46,7 @@ Step 4: Run DRAM-v → annotation of viral sequences, needed for manual curation
 Step 5: Manual curation → investigate suspect viral genomes 
 ```
 
-Unlike sed and pullseq commands which can (generally) be run directly on the command line, the above commands for VirSorterr2, CheckV and DRAM-v should always be run as bash scripts and submitted to slurm using sbatch [file].sh. Note: To run DRAM-v on the server, the source command is: source /opt/Miniconda2/miniconda2/bin/activate DRAM1.4.0
+Unlike sed and pullseq commands which can (generally) be run directly on the command line, the above commands for VirSorter2, CheckV and DRAM-v should always be run as bash scripts and submitted to slurm using sbatch [file].sh. Note: To run DRAM-v on the server, the source command is: source /opt/Miniconda2/miniconda2/bin/activate DRAM1.4.0
 
 #### Stop & Think:
 How might size and quality of metagenomes influence the recovery of vMAGs in this step?
