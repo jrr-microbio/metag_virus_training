@@ -4,7 +4,7 @@ In this workshop, we will explain how to identify viral genomes (vMAGs) from met
 
 ## Viral Recovery and Identification
 
-To identify viral genomes within assemblies, we use VirSorter2 (https://microbiomejournal.biomedcentral.com/articles/10.1186/s40168-020-00990-y). Per their paper, VirSorter2 is “a DNA and RNA virus identification tool that leverages genome-informed database advances across a collection of customized automatic classifiers to improve the accuracy and range of virus sequence detection”. 
+To identify viral genomes within assemblies, we use [VirSorter2](https://microbiomejournal.biomedcentral.com/articles/10.1186/s40168-020-00990-y). Per their paper, VirSorter2 is “a DNA and RNA virus identification tool that leverages genome-informed database advances across a collection of customized automatic classifiers to improve the accuracy and range of virus sequence detection”. 
 
 Before using this tool, we need to do two things: (1) make sure assemblies are properly renamed and (2) pull only scaffolds of a certain length. 
 
