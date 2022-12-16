@@ -14,7 +14,7 @@ Important: VirSorter2 can also be used with metaT data to identify RNA viruses, 
 This step helps in downstream analyses as identified viral genomes will already be named with the sample that they originated from. This has likely been done in previous steps, but if not, use a sed command to do so:
 
 ```
-sed ‘s/>/>[new-name]/’ [assembly.fa] > [named-assembly.fa]
+sed ‘s/>/>new-name/’ assembly.fa > named-assembly.fa
 ```
 
 Sed commands are very useful and have many options. Here, we are using it to rename the contigs within the assembly. We first call sed and then provide the specific options which are within the ‘ ‘ and delimited by /. The s option (substitution) tells sed that we would like to find [x] and replace it with [z]. In this example scenario, the command would be: sed ‘s/x/z/’. Finally, we tell sed which file to act upon and specify that we want to write this output to a new file using >.  
@@ -57,7 +57,7 @@ How might size and quality of metagenomes influence the recovery of vMAGs in thi
 Though we recommend using 10kb contigs, in some scenarios you may also want to consider including contigs >5kb 
 
 ### Step 4: Cluster vMAGs 95/85
-In an effort to standardize viral genome identification, the viral community got together to establish a consensus on best practices in a paper titled [Minimum Information about an Uncultivated Virus Genome (MIUViG)](https://www.nature.com/articles/nbt.4306). Within those rules, and much like you do for MAGs, we cluster the viral genomes to remove any duplicates. Viral clustering is done at 95% ANI across 85% of the shortest contig that is being compared - in other words, to cluster, a viral genome must be 95% similar across 85% of its genome to be considered the same viral population (i.e., vMAG). To do this, we will use some additional features that are included as part of checkV software. 
+In an effort to standardize viral genome identification, the viral community got together to establish a consensus on best practices in a paper titled [Minimum Information about an Uncultivated Virus Genome (MIUViG)](https://www.nature.com/articles/nbt.4306). Within those rules, and much like you do for MAGs, we cluster the viral genomes to remove any duplicates. Viral clustering is done at 95% ANI across 85% of the shortest contig that is being compared - in other words, to cluster, a viral genome must be 95% similar across 85% of its genome to be considered the same viral population (i.e., vMAG). To do this, we will use some additional features that are included as part of [checkV](https://bitbucket.org/berkeleylab/checkv/src/master/) software. 
 
 First, create a blast+ database. This is part of the blastn package already installed on the server so you can just directly call this:
 
