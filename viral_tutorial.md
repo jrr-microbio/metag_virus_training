@@ -98,7 +98,7 @@ awk '{print $1}' my_clusters.tsv > clustered_headers.txt
 ...and to get the final sequence file we use a pullseq script available on the server:
 
 ```
-pullseq_header_name.py -i vs2-pass2/for-dramv/final-viral-combined-for-dramv_nobadchars.fa -n clustered_headers.txt -o ./final_95-85_clustered_vMAGs.fasta -e F
+pullseq_header_name.py -i final-viral-combined-for-dramv_nobadchars.fa -n clustered_headers.txt -o final_95-85_clustered_vMAGs.fasta -e F
 ```
 
 The result is a final file called final_95-85_clustered_vMAGs.fasta that is your final clustered viral database.
