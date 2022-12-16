@@ -4,7 +4,7 @@ In this workshop, we will explain how to identify viral genomes (vMAGs) from met
 
 ## Viral Recovery and Identification
 
-To identify viral genomes within assemblies, we use a VirSorter2. Per their paper, VirSorter2 is “a DNA and RNA virus identification tool that leverages genome-informed database advances across a collection of customized automatic classifiers to improve the accuracy and range of virus sequence detection”. 
+To identify viral genomes within assemblies, we use VirSorter2 (https://microbiomejournal.biomedcentral.com/articles/10.1186/s40168-020-00990-y). Per their paper, VirSorter2 is “a DNA and RNA virus identification tool that leverages genome-informed database advances across a collection of customized automatic classifiers to improve the accuracy and range of virus sequence detection”. 
 
 Before using this tool, we need to do two things: (1) make sure assemblies are properly renamed and (2) pull only scaffolds of a certain length. 
 
@@ -35,7 +35,7 @@ Note: For best data management practice, delete the subsetted-assembly file (con
 
 To confidently identify contigs of viral nature we will use information provided by VirSorter2, CheckV, and DRAM-v through a series of steps. 
 
-We follow the protocol developed by the Sullivan Lab et al. found here. Following this SOP, you will first run VirSorter2, followed by CheckV and VirSorter again before finally running DRAM-v. Briefly, VirSorter2 will first identify contigs of possible viral origins and CheckV will then identify and trim the sequences for possible host contamination. We then run VirSorter2 again on the curated sequences to generate an ‘affi-contigs.tab’ file that will feed into DRAM-v and is important for AMG identification. This protocol is designed to check all recovered viral genomes as thoroughly as possible so that you can be sure these are not contaminated with host (bacterial & archaeal) DNA and have enough evidence that the contigs are viral in origin. Therefore, it’s important to also follow the manual curation steps at the end of the SOP which are guided by the results of DRAM-v. 
+We follow the protocol developed by the Sullivan Lab et al. found here (https://www.protocols.io/view/viral-sequence-identification-sop-with-virsorter2-5qpvoyqebg4o/v3?step=5). Following this SOP, you will first run VirSorter2, followed by CheckV and VirSorter again before finally running DRAM-v. Briefly, VirSorter2 will first identify contigs of possible viral origins and CheckV will then identify and trim the sequences for possible host contamination. We then run VirSorter2 again on the curated sequences to generate an ‘affi-contigs.tab’ file that will feed into DRAM-v and is important for AMG identification. This protocol is designed to check all recovered viral genomes as thoroughly as possible so that you can be sure these are not contaminated with host (bacterial & archaeal) DNA and have enough evidence that the contigs are viral in origin. Therefore, it’s important to also follow the manual curation steps at the end of the SOP which are guided by the results of DRAM-v. 
 
 ```
 Overview of Sullivan Lab SOP: 
