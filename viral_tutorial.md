@@ -2,7 +2,7 @@
 
 In this workshop, we will explain how to identify viral genomes (vMAGs) from metagenomic assemblies followed by dereplication, annotation, taxonomic classification, and mapping for coverage and relative abundance of recovered viral genomes. We will also cover how to make viral linkages using two main methods (CRISPR and consensus methods).
 
-##Viral Recovery and Identification
+## Viral Recovery and Identification
 
 
 ```
