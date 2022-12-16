@@ -35,7 +35,7 @@ Note: For best data management practice, delete the subsetted-assembly file (con
 
 To confidently identify contigs of viral nature we will use information provided by VirSorter2, CheckV, and DRAM-v through a series of steps. 
 
-We follow the protocol developed by the Sullivan Lab et al. found here (https://www.protocols.io/view/viral-sequence-identification-sop-with-virsorter2-5qpvoyqebg4o/v3?step=5). Following this SOP, you will first run VirSorter2, followed by CheckV and VirSorter again before finally running DRAM-v. Briefly, VirSorter2 will first identify contigs of possible viral origins and CheckV will then identify and trim the sequences for possible host contamination. We then run VirSorter2 again on the curated sequences to generate an ‘affi-contigs.tab’ file that will feed into DRAM-v and is important for AMG identification. This protocol is designed to check all recovered viral genomes as thoroughly as possible so that you can be sure these are not contaminated with host (bacterial & archaeal) DNA and have enough evidence that the contigs are viral in origin. Therefore, it’s important to also follow the manual curation steps at the end of the SOP which are guided by the results of DRAM-v. 
+We follow the protocol developed by the Sullivan Lab et al. found [here](https://www.protocols.io/view/viral-sequence-identification-sop-with-virsorter2-5qpvoyqebg4o/v3?step=5). Following this SOP, you will first run VirSorter2, followed by CheckV and VirSorter again before finally running DRAM-v. Briefly, VirSorter2 will first identify contigs of possible viral origins and CheckV will then identify and trim the sequences for possible host contamination. We then run VirSorter2 again on the curated sequences to generate an ‘affi-contigs.tab’ file that will feed into DRAM-v and is important for AMG identification. This protocol is designed to check all recovered viral genomes as thoroughly as possible so that you can be sure these are not contaminated with host (bacterial & archaeal) DNA and have enough evidence that the contigs are viral in origin. Therefore, it’s important to also follow the manual curation steps at the end of the SOP which are guided by the results of DRAM-v. 
 
 ```
 Overview of Sullivan Lab SOP: 
@@ -57,7 +57,7 @@ How might size and quality of metagenomes influence the recovery of vMAGs in thi
 Though we recommend using 10kb contigs, in some scenarios you may also want to consider including contigs >5kb 
 
 ### Step 4: Cluster vMAGs 95/85
-In an effort to standardize viral genome identification, the viral community got together to establish a consensus on best practices (https://www.nature.com/articles/nbt.4306). Within those rules, and much like you do for MAGs, we cluster the viral genomes to remove any duplicates. Viral clustering is done at 95% ANI across 85% of the shortest contig that is being compared - in other words, to cluster, a viral genome must be 95% similar across 85% of its genome to be considered the same viral population (i.e., vMAG). To do this, there are some additions to the checkV software that does this (https://bitbucket.org/berkeleylab/checkv/src/master/). 
+In an effort to standardize viral genome identification, the viral community got together to establish a consensus on best practices in a paper titled [Minimum Information about an Uncultivated Virus Genome (MIUViG)](https://www.nature.com/articles/nbt.4306). Within those rules, and much like you do for MAGs, we cluster the viral genomes to remove any duplicates. Viral clustering is done at 95% ANI across 85% of the shortest contig that is being compared - in other words, to cluster, a viral genome must be 95% similar across 85% of its genome to be considered the same viral population (i.e., vMAG). To do this, there are some additional [scripts](https://bitbucket.org/berkeleylab/checkv/src/master/) that are included as part of checkV software that do this . 
 
 First, create a blast+ database. This is part of the blastn package already installed on the server so you can just directly call this:
 
@@ -73,9 +73,9 @@ Next, use megablast from blast+ package to perform all-vs-all blastn of sequence
 blastn -query final-viral-combined-for-dramv_nobadchars.fa -db my_db -outfmt '6 std qlen slen' -max_target_seqs 10000 -o my_blast.tsv -num_threads 10
 ```
 
-Notes: If you have more than 10,000 sequences, increase the -max_target_seqs number to more slightly above that number. “-outfmt 6” is a specific type of format that blastn can output. The headers for the output file will have this format https://www.metagenomics.wiki/tools/blast/blastn-output-format-6. The following flag “std” is the default order of outfmt 6 output. It then also specifies to give the query length and sequence length in addition to other values. 
+Notes: If you have more than 10,000 sequences, increase the -max_target_seqs number to more slightly above that number. “-outfmt 6” is a specific type of format that blastn can output. The headers for the output file will have this [format](https://www.metagenomics.wiki/tools/blast/blastn-output-format-6). The following flag “std” is the default order of outfmt 6 output. It then also specifies to give the query length and sequence length in addition to other values. 
  
-This next part is done by some custom scripts that are provided as part of the checkV download (but that aren’t installed on the server). You have to go in and download them from here: https://bitbucket.org/berkeleylab/checkv/downloads/ . Once you unzip that file, go into the “scripts” folder, and the two you need are anicalc.py and aniclust.py. Go ahead and copy those into a directory on the server where you have your unclustered viral genomes. After copying them, make sure that permissions are set to read/execute (run: chmod 777 anicalc.py ; chmod 777 aniclust.py) and then calculate pairwise ANI by combining local alignments between sequence pairs:
+This next part is done by some custom scripts that are provided as part of the checkV download (but that aren’t installed on the server). You have to go in and download them from [here](https://bitbucket.org/berkeleylab/checkv/downloads/). Once you unzip that file, go into the “scripts” folder, and the two you need are anicalc.py and aniclust.py. Go ahead and copy those into a directory on the server where you have your unclustered viral genomes. After copying them, make sure that permissions are set to read/execute (run: chmod 777 anicalc.py ; chmod 777 aniclust.py) and then calculate pairwise ANI by combining local alignments between sequence pairs:
 
 ```
 python anicalc.py -i my_blast.tsv -o my_ani.tsv
@@ -275,7 +275,7 @@ Each row in the output file lists each spacer (column 1) that has hit to a virus
 Once you have filtered the BLAST output, you now have a list of host spacers that link to a virus, and thus host-virus linkages!
 
 ### Option 2: VirHostMatcher
-VirHostMatcher uses oligonucleotide frequency between a viral and host genome to determine if they infect each other. For more information, read the paper here: (https://academic.oup.com/nar/article/45/1/39/2605663)
+[VirHostMatcher]((https://academic.oup.com/nar/article/45/1/39/2605663) uses oligonucleotide frequency between a viral and host genome to determine if they infect each other. 
 
 To run VirHostMatcher, you create three different directories. One of them will contain all the viral genomes (i.e., “virus), one will contain all the bacterial / archaeal genomes (i.e., “host”), and the last will be an empty folder titled “output”. Note: For viral and host genomes, they need to be in a single .fasta file for each. So if you have 125 genomes, you will have 125 fasta files one with each genome.
 
@@ -288,7 +288,7 @@ python /opt/VirHostMatcher/vhm.py -v virus -b host -o output
 In the output folder, you will then have a BUNCH of different files for all of the distance metrics that this method uses. You will only be using the file titled “d2star_k6.csv”. This file is a matrix where hosts are the columns, and viruses are the rows. The different scores that are within each matrix are the dissimilarities. The important thing about VirHostMatcher is that you ONLY consider a possible hit if it is < 0.25. ie., you need to parse out this file to only have the linkages that are under 0.25. After that, for each virus, you only choose the LOWEST d2* metric as the most likely hit. If a virus has multiple hits under 0.25, you only take the lowest hit. While theoretically possible that a virus infects multiple hosts, this tool is quite squishy so taking a stringent approach is best.
 
 ### Option 3: PHIST
-PHIST is different from VirHostMatcher because instead of using oligonucleotide frequencies, it uses exact sequence similarity between a virus and its putative hosts. (https://academic.oup.com/bioinformatics/article/38/5/1447/6460800) 
+[PHIST](https://academic.oup.com/bioinformatics/article/38/5/1447/6460800) is different from VirHostMatcher because instead of using oligonucleotide frequencies, it uses exact sequence similarity between a virus and its putative hosts. 
 
 ```
 phist.py -k 25 -t 25 ./virus ./host common_kmers.csv predictions.csv
