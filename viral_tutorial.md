@@ -1,5 +1,7 @@
 # Workshop 7: Viral Multi-Omics Workflow
 
+![ViralGitHub-01](https://user-images.githubusercontent.com/95941755/208967959-c3db3dff-1347-4ffa-8208-1c4bae695a7f.png)
+
 In this workshop, we will explain how to identify viral genomes (vMAGs) from metagenomic assemblies followed by dereplication, annotation, taxonomic classification, and mapping for coverage and relative abundance of recovered viral genomes. We will also cover how to make viral linkages using two main methods (CRISPR and consensus methods).
 
 ## Viral Recovery and Identification
