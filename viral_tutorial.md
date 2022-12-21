@@ -299,7 +299,7 @@ Once you have a database of both recovered MAGs (host genomes) and recovered vMA
 
 There are two main approaches that we use to make connections between a MAG and a vMAG. These are (1) CRISPR based linkages, (2) consensus method using tools that consider oligonucleotide frequency and sequence similarity between hosts and viruses. Generally CRISPR based linkages are considered to be the strongest way to make host-viral linkages. The consensus method does not depend on hosts containing a CRISPR array and instead uses two (maybe even 3) different tools to determine likely virus-host linkages. For the consensus approach, we recommend  VirHostMatcher and PHIST. Additional tools that can be used include software like WiSH and VirHostMatcher-Net.
 
-### Option 1: CRISPR-based host-virus inkages
+#### Option 1: CRISPR-based host-virus inkages
 This method of making host-virus linkages depends upon your host MAG containing a CRISPR array. Unfortunately, CRISPR arrays are more commonly encoded and deployed in some ecosystems compared to others and therefore it may not be surprising if you don’t detect many (or any) CRISPR arrays in and across your MAGs. If this is the case, you’ll want to pair or substitute this approach with the consensus approaches (options 2 and 3).
 
 Why is this approach the strongest way to make host-virus linkages? CRISPR-Cas systems are often thought of as bacterial and archaeal immune systems. CRISPR works by recording memories of viral interactions by integrating small pieces of viral DNA as spacers within the hosts’ CRISPR array. Within the array, spacers are interspaced with identical repeat sequences and flanked by Cas (CRISPR-associated) genes. These saved memories help to protect the host against recurrent invasion by the same viral population by more rapidly identifying and degrading the invading nucleic acids from the virus. For our use, we can extract these spacers (which are incorporated snippets of viral DNA) and match them to our vMAGs. A great review paper to reference in understanding CRISPR is: https://www.annualreviews.org/doi/10.1146/annurev-ecolsys-121415-032428
@@ -371,7 +371,7 @@ Each row in the output file lists each spacer (column 1) that has hit to a virus
 
 Once you have filtered the BLAST output, you now have a list of host spacers that link to a virus, and thus host-virus linkages!
 
-### Option 2: VirHostMatcher
+#### Option 2: VirHostMatcher
 [VirHostMatcher](https://academic.oup.com/nar/article/45/1/39/2605663) uses oligonucleotide frequency between a viral and host genome to determine if they infect each other. 
 
 To run VirHostMatcher, you create three different directories. One of them will contain all the viral genomes (i.e., “virus), one will contain all the bacterial / archaeal genomes (i.e., “host”), and the last will be an empty folder titled “output”. Note: For viral and host genomes, they need to be in a single .fasta file for each. So if you have 125 genomes, you will have 125 fasta files one with each genome.
@@ -384,7 +384,7 @@ python /opt/VirHostMatcher/vhm.py -v virus -b host -o output
 
 In the output folder, you will then have a BUNCH of different files for all of the distance metrics that this method uses. You will only be using the file titled “d2star_k6.csv”. This file is a matrix where hosts are the columns, and viruses are the rows. The different scores that are within each matrix are the dissimilarities. The important thing about VirHostMatcher is that you ONLY consider a possible hit if it is < 0.25. ie., you need to parse out this file to only have the linkages that are under 0.25. After that, for each virus, you only choose the LOWEST d2* metric as the most likely hit. If a virus has multiple hits under 0.25, you only take the lowest hit. While theoretically possible that a virus infects multiple hosts, this tool is quite squishy so taking a stringent approach is best.
 
-### Option 3: PHIST
+#### Option 3: PHIST
 [PHIST](https://academic.oup.com/bioinformatics/article/38/5/1447/6460800) is different from VirHostMatcher because instead of using oligonucleotide frequencies, it uses exact sequence similarity between a virus and its putative hosts. 
 
 ```
