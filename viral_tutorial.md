@@ -96,7 +96,9 @@ Though we recommend using 10kb contigs, in some scenarios you may also want to c
 After we have annotated and have all of our files, we need to manually curate our database to only true viral genomes. The steps are described in the Sullivan SOP as well, but they are here for clarity:
 
 
-#### Screening based on viral and host gene counts, score, hallmark gene counts, and contig length
+### Step 4: Manual curation of viral contigs
+
+#### Part 1: Screening based on viral and host gene counts, score, hallmark gene counts, and contig length
 
 The viral and host gene counts from checkV can be used for false positive screen ing. Since checkV is very conservative
 on calling viral genes, those sequences with viral genes called by checkV should be viral, and those with no viral gene called 
@@ -116,14 +118,14 @@ To look at the viral_gene, host_gene, score, and hallmark of sequences you can m
 and "checkv/contamination.tsv", and filter in a spreadsheet.
 
 
-#### DRAMv annotation screening
+#### Part 2: DRAMv annotation screening
 There are some genes that are common in both viruses and hosts (e.g.  Polyliposaccharides [LPS] related) and mobile element, 
 which can cause false positives in the above "Keep2" category. Thus we want to be cautious with contigs with these genes. We 
 have compiled a list of "suspicious" genes in this link. You can subset the DRAMv table using contigs in the "Keep2" category, 
 and screen for the "suspicious" genes in the subset DRAMv table (ignore case, e.g. use "-i" option for "grep"),  and then put 
 contigs with those genes in the “Manual check” category.
 
-#### Manual Curation:
+#### Part 3: Manual Curation
 
 For those in “manual check” category, you can look through their annotations in "dramv-annotate/annotations.tsv", in which each 
 gene of every contig is a line and has annotation from multiple databases. This step is hard to standardize, but below are some 
@@ -151,7 +153,7 @@ Few annotations, only ~1-3 genes all hitting to cellular genes (even if bitscore
 
 Lastly, user beware that any provirus boundary predicted by VirSorter 2 and/or checkV is an approximate estimate only (calling “ends” is quite a challenging problem in prophage discovery), and needs to be manually inspected carefully too, especially for AMG studies.
 
-### Step 4: Cluster vMAGs 95/85
+### Step 5: Cluster vMAGs 95/85
 In an effort to standardize viral genome identification, the viral community got together to establish a consensus on best practices in a paper titled [Minimum Information about an Uncultivated Virus Genome (MIUViG)](https://www.nature.com/articles/nbt.4306). Within those rules, and much like you do for MAGs, we cluster the viral genomes to remove any duplicates. Viral clustering is done at 95% ANI across 85% of the shortest contig that is being compared - in other words, to cluster, a viral genome must be 95% similar across 85% of its genome to be considered the same viral population (i.e., vMAG). To do this, we will use some additional features that are included as part of [CheckV](https://bitbucket.org/berkeleylab/checkv/src/master/) software. 
 
 First, create a blast+ database. This is part of the blastn package already installed on the server so you can just directly call this:
@@ -198,7 +200,7 @@ pullseq_header_name.py -i final-viral-combined-for-dramv_nobadchars.fa -n cluste
 
 The result is a final file called final_95-85_clustered_vMAGs.fasta that is your final clustered viral database.
 
-### Step 5: Rerun DRAM-v and delete old unclustered DRAM-v
+### Step 6: Rerun DRAM-v and delete old unclustered DRAM-v
 Now that you have your final clustered database, we want to run DRAM-v once again so that we can get all of our viral annotations as well as auxiliary metabolic genes (AMGs). We run DRAM-v similar to how the Sullivan lab SOP ran it, but we add the Uniref flag to get as much information as possible. 
 
 ```
@@ -226,7 +228,7 @@ Once this DRAM-v run finishes, go back and delete the older DRAM-v run, as you w
 
 With the final distill command, you get an output table called “amg_summary.tsv” that has all of the AMG information you will need for AMG analyses. This will give you AMGs that have their own categories (as labeled in the DRAM manuscript). We usually take AMGs that are categories 1-3, and remove those that are categories 4-5. However, another thing to watch out for is transposons. For these putative AMGs, make sure that they are not labeled with the “T” flag and “F” flags, as these are less likely to be viral - and even more so the “genome” itself is possibly not viral. If you have multiple AMGs per viral genome, it is critical that you go to the annotations and manually confirm again that it is, in fact, a viral genome. Usually when there are more than 3 AMGs within a single viral genome, I consider this slightly suspect. You can manually confirm these are viral by looking for viral-like genes within the annotations like the Sullivan Lab SOP mentions. I mention this because sometimes high confidence ‘keep’ labeled viral genomes end up in the post-qc steps and have no indication of being viral.
 
-### Step 6: Viral Taxonomy
+### Step 7: Viral Taxonomy
 Similar to bacteria and archaea, we often want to know whether the viral genomes we have identified are novel. However, since viruses do not have universal marker genes, we cannot use normal methods like comparing a specific gene (unless it is a broadly conserved gene for a specific viral group). In virus-land, we identify taxonomy by assessing protein content similarity between different viruses. To do this, we use a tool called vContact2. The input is the .faa proteins file from the DRAM-v output.
 
 Before we get started, we need to subset/parse out our sequences a little. Rory and Josué worked on this script that can help manually parse vContact2 output based on scaffold headers. First we change the scaffold headers to a line that the script can parse downstream:
@@ -269,7 +271,7 @@ The resulting parsed genome by genome overview will then contain the files that 
 
 Note: If you are trying to use this script to say more than just whether a virus has known taxonomy, the genome_category column can be leveraged to collate each cluster into “groups”. The way that you can use this is by adding more than just the two categories “this study” and “refseq_genome” into the possible options in the “genome_category” column. For example, if you have viruses from another ecosystem, and you are seeing if any of yours cluster to another system, add in a third category “ecosystem_2” to “genome_category”. The parsed output file will then tell you when a genome from “this study” will cluster to “ecosystem_2” or a “refseq_genome”.
 
-### Step 7: mapping reads to viruses
+### Step 8: mapping reads to viruses
 Similar to MAGs, we can also map metagenomic reads to viral genomes to determine coverage and relative abundance. This follows a very similar workflow as mapping to MAGs or genes, however there are some key differences. Here we include an example for mapping with bbmap, but the same workflow can be followed using bowtie (as was shown with mapping to MAGs). 
 
 First, map trimmed reads to a concatenated file of all viral contigs using bbmap: 
@@ -298,7 +300,7 @@ coverm contig --bam-files *_95id_sorted.bam -m covered_fraction -t 15 --min-cove
 coverm contig --bam-files *_95id_sorted.bam -m reads_per_base -t 15 &> coverm_reads-per-base_clustered.txt
 ```
 
-### Step 8: Make a master spreadsheet
+### Step 9: Make a master spreadsheet
 It is important to start generating a viral supplementary file early, as all of these files will be required upon publication. This is also very helpful for analyses to have much of the important information in one place. At this point, I usually start making a spreadsheet in excel that includes the following information:
 
 Tab 1: vMAG Summary: Virus genome ID, any viral ID renaming (sometimes this is helpful), genome average abundance, checkV scores and quality metrics from checkV output files, genome length, and viral taxonomy
@@ -307,7 +309,7 @@ Tab 3: AMG Summary/Distill output
 Tab 4: vMAG read mapping output
 
 
-### Step 9: Making host-viral linkages
+### Step 10: Making host-viral linkages
 Once you have a database of both recovered MAGs (host genomes) and recovered vMAGs (viral genomes), you can then attempt to make host-viral linkages. Since viruses depend on their hosts to proliferate, we can better understand the role that a viral population may have in the broader all microbial community if we understand which hosts they interact with. 
 
 There are two main approaches that we use to make connections between a MAG and a vMAG. These are (1) CRISPR based linkages, (2) consensus method using tools that consider oligonucleotide frequency and sequence similarity between hosts and viruses. Generally CRISPR based linkages are considered to be the strongest way to make host-viral linkages. The consensus method does not depend on hosts containing a CRISPR array and instead uses two (maybe even 3) different tools to determine likely virus-host linkages. For the consensus approach, we recommend  VirHostMatcher and PHIST. Additional tools that can be used include software like WiSH and VirHostMatcher-Net.
