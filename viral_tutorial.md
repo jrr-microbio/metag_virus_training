@@ -1,4 +1,4 @@
-# Workshop 7: Viral Multi-Omics Workflow
+# Workshop 7: Viral Metagenomics Workflow
 
 ![ViralGitHub-01](https://user-images.githubusercontent.com/95941755/208967959-c3db3dff-1347-4ffa-8208-1c4bae695a7f.png)
 
