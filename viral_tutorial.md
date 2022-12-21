@@ -220,22 +220,25 @@ There are two main approaches that we use to make connections between a MAG and 
 ### Option 1: CRISPR-based host-virus inkages
 This method of making host-virus linkages depends upon your host MAG containing a CRISPR array. Unfortunately, CRISPR arrays are more commonly encoded and deployed in some ecosystems compared to others and therefore it may not be surprising if you don’t detect many (or any) CRISPR arrays in and across your MAGs. If this is the case, you’ll want to pair or substitute this approach with the consensus approaches (options 2 and 3).
 
-Why is this approach the strongest way to make host-virus linkages? CRISPR-Cas systems are often thought of as bacterial and archaeal immune systems. CRISPR works by recording memories of viral interactions by integrating small pieces of viral DNA as spacers within the hosts’ CRISPR array. Within the array, spacers are interspaced with identical repeat sequences and flanked by Cas (CRISPR-associated) genes. These saved memories help to protect the host against recurrent invasion by the same viral population by more rapidly identifying and degrading the invading nucleic acids from the virus. For our use, we can extract these spacers (which are incorporated snippets of viral DNA) and match them to our vMAGs.
+Why is this approach the strongest way to make host-virus linkages? CRISPR-Cas systems are often thought of as bacterial and archaeal immune systems. CRISPR works by recording memories of viral interactions by integrating small pieces of viral DNA as spacers within the hosts’ CRISPR array. Within the array, spacers are interspaced with identical repeat sequences and flanked by Cas (CRISPR-associated) genes. These saved memories help to protect the host against recurrent invasion by the same viral population by more rapidly identifying and degrading the invading nucleic acids from the virus. For our use, we can extract these spacers (which are incorporated snippets of viral DNA) and match them to our vMAGs. A great review paper to reference in understanding CRISPR is: https://www.annualreviews.org/doi/10.1146/annurev-ecolsys-121415-032428
 
 The basic overview to making host-viral linkages vira CRISPR is:
-Identify CRISPR arrays within a MAG
-Extract spacers 
-BLASTn these spacers against our vMAG database 
-Filter for ‘good’ matches to make high-confidence host-viral linkages 
+ 1. Identify CRISPR arrays within a MAG
+ 2. Extract spacers 
+ 3. BLASTn these spacers against our vMAG database 
+ 4. Filter for ‘good’ matches to make high-confidence host-viral linkages 
 
 The first thing you’ll need to do is identify CRISPR arrays in your MAGs. To do this, we will use Geneious. You’ll also need to install the CRISPR Recognition Tool (CRT) plugin for Geneious. 
 
 Once you have this installed and Geneious opened, import your MAGs as individual fastas. Select one a MAG, and go to ‘Annotate & Predict’ on the top toolbar. Select ‘Find CRISPR loci’ from the dropdown menu. You will then see a display window with some requirements in identifying CRISPR arrays - make sure to select ‘more options’ and enter the following parameters: 
-min number of repeats a CRISPR must contain: 4 
-minimum length of a CRISPR’s repeated region: 19 
-maximum length of a CRISPR’s repeated region: 55
-minimum length of a CRISPR’s non-repeated region (or spacer region): 19 maximum length of a CRISPR’s non-repeated region (or spacer region): 48 
-length of a search window used to discover CRISPR’s: 8
+ -min number of repeats a CRISPR must contain: 4 
+ -minimum length of a CRISPR’s repeated region: 19 
+ -maximum length of a CRISPR’s repeated region: 55
+ -minimum length of a CRISPR’s non-repeated region (or spacer region): 19 
+ -maximum length of a CRISPR’s non-repeated region (or spacer region): 48 
+ -length of a search window used to discover CRISPR’s: 8
+ 
+<img width="577" alt="Screen Shot 2022-12-21 at 10 58 29 AM" src="https://user-images.githubusercontent.com/101381900/208963872-31b815c9-b661-49b9-9eaf-b5a1ff84f068.png">
 
 You will see that CRISPR arrays are identified in green and yellow highlighted sequences within contigs of the MAG fasta file. Explore this! 
 
