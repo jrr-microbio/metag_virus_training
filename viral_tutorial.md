@@ -230,17 +230,25 @@ The basic overview to making host-viral linkages vira CRISPR is:
 
 The first thing you’ll need to do is identify CRISPR arrays in your MAGs. To do this, we will use Geneious. You’ll also need to install the CRISPR Recognition Tool (CRT) plugin for Geneious. 
 
-Once you have this installed and Geneious opened, import your MAGs as individual fastas. Select one a MAG, and go to ‘Annotate & Predict’ on the top toolbar. Select ‘Find CRISPR loci’ from the dropdown menu. You will then see a display window with some requirements in identifying CRISPR arrays - make sure to select ‘more options’ and enter the following parameters: 
- -min number of repeats a CRISPR must contain: 4 
- -minimum length of a CRISPR’s repeated region: 19 
- -maximum length of a CRISPR’s repeated region: 55
- -minimum length of a CRISPR’s non-repeated region (or spacer region): 19 
- -maximum length of a CRISPR’s non-repeated region (or spacer region): 48 
- -length of a search window used to discover CRISPR’s: 8
+Once you have this installed and Geneious opened, import your MAGs as individual fastas. Select one a MAG, and go to ‘Annotate & Predict’ on the top toolbar. Select ‘Find CRISPR loci’ from the dropdown menu. You will then see a display window with some requirements in identifying CRISPR arrays - make sure to select ‘more options’ and enter the following parameters (also see image below): 
+ 1. min number of repeats a CRISPR must contain: 4 
+ 2. minimum length of a CRISPR’s repeated region: 19 
+ 3. maximum length of a CRISPR’s repeated region: 55
+ 4. minimum length of a CRISPR’s non-repeated region (or spacer region): 19 
+ 5. maximum length of a CRISPR’s non-repeated region (or spacer region): 48 
+ 6. length of a search window used to discover CRISPR’s: 8
  
 <img width="577" alt="Screen Shot 2022-12-21 at 10 58 29 AM" src="https://user-images.githubusercontent.com/101381900/208963872-31b815c9-b661-49b9-9eaf-b5a1ff84f068.png">
 
-You will see that CRISPR arrays are identified in green and yellow highlighted sequences within contigs of the MAG fasta file. Explore this! 
+You will see that CRISPR arrays are identified in green and yellow highlighted sequences within contigs of the MAG fasta file. It will look something like the screenshot shown below. Explore this! 
+
+<img width="1236" alt="Screen Shot 2022-12-21 at 10 59 17 AM" src="https://user-images.githubusercontent.com/101381900/208964987-46307349-e3f0-4bac-b503-8d445498489d.png">
+
+The overall array is highlighted in yellow, while spacers are light green and repeat sequences are dark green. We can zoom in further to get a better look at this array, as shown below.
+
+<img width="1232" alt="Screen Shot 2022-12-21 at 10 59 43 AM" src="https://user-images.githubusercontent.com/101381900/208965224-f3951655-d05d-4201-9f70-9954be44de54.png">
+
+CRISPR annotations are also shown on the right side of this window. In this example that one CRISPR array was identified with one unique repeat sequence, and 21 spacers were identified within this array. 
 
 Stop and think: 
 CRISPR arrays are made of many short repeated sequences (quite literally the ‘repeat’ sequences that interspace the spacers) and therefore often break metagenomic assemblies. Because of this, you’ll see that many arrays are often found at the end of contigs and you should not assume that every highlighted ‘array’ is a distinct array. If you are interested in counting the number of distinct arrays within a MAG, you will want to count the number of different repeat sequences, as these should be nearly identical within a given array.
