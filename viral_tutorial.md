@@ -1,6 +1,6 @@
 # Workshop 7: Viruses
 
-![ViralGitHub-01](https://user-images.githubusercontent.com/95941755/209006069-1c7a38ef-383e-4041-baa4-9f7afc84c0f9.png)
+![ViralGitHub-01](https://user-images.githubusercontent.com/95941755/209015061-45c1a53f-e732-49f7-b5bb-c7b7cf1943d9.png)
 
 In this workshop, we will explain how to identify viral genomes (vMAGs) from metagenomic assemblies followed by dereplication, annotation, taxonomic classification, and mapping for coverage and relative abundance of recovered viral genomes. We will also cover how to make viral linkages using two main methods (CRISPR and consensus methods).
 
@@ -24,7 +24,7 @@ Sed commands are very useful and have many options. Here, we are using it to ren
 * *Important: make sure to always replace the > before your new name when re-naming. The carrot before each scaffold name is important for many programs - don’t forget it! 
 
 ### Step 2: Pull contigs 10kb in length 
-Viral genomes can be challenging to confidently identify from contigs, so to increase the likelihood that genomes we recover are viral we want to run VirSorter2 on relatively long contigs. Therefore, we’ll first pull contigs that are at least 10kbp from our assemblies using pullseq:
+Viral genomes can be challenging to confidently identify from contigs, so to increase the likelihood that genomes we recover are viral we want to run VirSorter2 on relatively long contigs. Therefore, we’ll first pull contigs that are at least 10kbp from our assemblies using [pullseq](https://github.com/bcthomas/pullseq):
 
 ```
 pullseq.py -i contigs.fa -m 10000 -o contigs_10000.fa
@@ -35,7 +35,7 @@ Note: For best data management practice, delete the subsetted-assembly file (con
 
 ### Step 3: Virsorter2, CheckV and DRAM-v for viral recovery and identification
 
-To confidently identify contigs of viral nature we will use information provided by VirSorter2, CheckV, and DRAM-v through a series of steps. 
+To confidently identify contigs of viral nature we will use information provided by [VirSorter2](https://microbiomejournal.biomedcentral.com/articles/10.1186/s40168-020-00990-y), [CheckV](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8116208/), and [DRAM-v](https://academic.oup.com/nar/article/48/16/8883/5884738) through a series of steps. 
 
 We follow the protocol developed by the Sullivan Lab et al. found [here](https://www.protocols.io/view/viral-sequence-identification-sop-with-virsorter2-5qpvoyqebg4o/v3?step=5). Following this SOP, you will first run VirSorter2, followed by CheckV and VirSorter again before finally running DRAM-v. Briefly, VirSorter2 will first identify contigs of possible viral origins and CheckV will then identify and trim the sequences for possible host contamination. We then run VirSorter2 again on the curated sequences to generate an ‘affi-contigs.tab’ file that will feed into DRAM-v and is important for AMG identification. This protocol is designed to check all recovered viral genomes as thoroughly as possible so that you can be sure these are not contaminated with host (bacterial & archaeal) DNA and have enough evidence that the contigs are viral in origin. Therefore, it’s important to also follow the manual curation steps at the end of the SOP which are guided by the results of DRAM-v. 
 
@@ -52,17 +52,15 @@ Unlike sed and pullseq commands which can (generally) be run directly on the com
 
 The first step is to run VirSorter2:
 
-virsorter run --keep-original-seq -i 5seq.fa -w vs2-pass1 --include-groups dsDNAphage,ssDNA --min-length 5000 --min-score 0.5 -j 28 all
-
 ```
 source /opt/Miniconda2/miniconda2/bin/activate virsorter2
-virsorter run --keep-original-seq -i 5seq.fa -w vs2-pass1 --include-groups dsDNAphage,ssDNA --min-length 10000 --min-score 0.5 -j 28 all
+virsorter run --keep-original-seq -i 5seq.fa -w vs2-pass1 --include-groups dsDNAphage,ssDNA --min-length 10000 --min-score 0.5 -j 15 all
 ```
 
 Now that we have the first pass of VirSorter2 run, we QC the viruses with checkV:
 
 ```
-checkv end_to_end vs2-pass1/final-viral-combined.fa checkv -t 28 -d /fs/project/PAS1117/jiarong/db/checkv-db-v1.0
+checkv end_to_end vs2-pass1/final-viral-combined.fa checkv -t 15 
 ```
 
 Now, we concatenate the CheckV trimmed output files for prophages and free viruses (files titled proviruses.fna and viruses.fna).
@@ -75,13 +73,13 @@ cat checkv/proviruses.fna checkv/viruses.fna > checkv/combined.fna
 And then we re-run VirSorter2 on that output in order to confirm the viral genomes.
 
 ```
-virsorter run --seqname-suffix-off --viral-gene-enrich-off --provirus-off --prep-for-dramv -i checkv/combined.fna -w vs2-pass2 --include-groups dsDNAphage,ssDNA --min-length 10000 --min-score 0.5 -j 28 all
+virsorter run --seqname-suffix-off --viral-gene-enrich-off --provirus-off --prep-for-dramv -i checkv/combined.fna -w vs2-pass2 --include-groups dsDNAphage,ssDNA --min-length 10000 --min-score 0.5 -j 15 all
 ```
 
 Now that you have a final viral file to manually curate, we run DRAM-v to help with the curation process.
 
 ```
-source /opt/Miniconda2/miniconda2/bin/activate DRAM1.4.0
+source /opt/Miniconda2/miniconda2/bin/activate DRAM1.4.4
 # step 1 annotate
 DRAM-v.py annotate -i vs2-pass2/for-dramv/final-viral-combined-for-dramv.fa -v vs2-pass2/for-dramv/viral-affi-contigs-for-dramv.tab -o dramv-annotate --threads 15  --use_uniref &> log_dramv_clustered_viruses_uniref.txt
 
@@ -157,7 +155,11 @@ blastn -query final-viral-combined-for-dramv_nobadchars.fa -db my_db -outfmt '6 
 
 Notes: If you have more than 10,000 sequences, increase the -max_target_seqs number to more slightly above that number. “-outfmt 6” is a specific type of format that blastn can output. The headers for the output file will have this [format](https://www.metagenomics.wiki/tools/blast/blastn-output-format-6). The following flag “std” is the default order of outfmt 6 output. It then also specifies to give the query length and sequence length in addition to other values. 
  
-This next part is done by some custom scripts that are provided as part of the CheckV download (but that aren’t installed on the server). You have to go in and download them from [here](https://bitbucket.org/berkeleylab/checkv/downloads/). Once you unzip that file, go into the “scripts” folder, and the two you need are anicalc.py and aniclust.py. Go ahead and copy those into a directory on the server where you have your unclustered viral genomes. 
+This next part is done by some custom scripts that are provided as part of the CheckV download (but that aren’t installed on the server). You have to go in and download them from [here](https://bitbucket.org/berkeleylab/checkv/downloads/). Once you unzip that file, go into the “scripts” folder, and the two you need are anicalc.py and aniclust.py. Go ahead and copy those into a directory on the server where you have your unclustered viral genomes. These are also hosted on the github here:
+
+[anicalc script](/7.Viruses/anicalc.py)
+
+[aniclust script](/7.Viruses/aniclust.py)
 
 After copying them, make sure that permissions are set to read/execute (run: chmod 777 anicalc.py ; chmod 777 aniclust.py) and then calculate pairwise ANI by combining local alignments between sequence pairs:
 
@@ -199,7 +201,7 @@ Now that you have your final clustered database, we want to run DRAM-v once agai
 #SBATCH --partition=wrighton-hi
 #SBATCH --nodelist=zenith
 
-source /opt/Miniconda2/miniconda2/bin/activate DRAM1.4.0
+source /opt/Miniconda2/miniconda2/bin/activate DRAM1.4.4
 
 #annotate
 DRAM-v.py annotate -i final_95-85_clustered_vMAGs.fasta -v viral-affi-contigs-for-dramv_nobadchars.tab -o ./output_clustered/uniref_clustered_vMAGs_DRAMv --min_contig_size 0 --threads 15  --use_uniref &> log_dramv_clustered_viruses_uniref.txt
@@ -208,7 +210,7 @@ DRAM-v.py annotate -i final_95-85_clustered_vMAGs.fasta -v viral-affi-contigs-fo
 DRAM-v.py distill -i annotations.tsv -o ./distill_clustered_vMAGs_output/
 ```
 
-#### Stop and think:
+#### Stop & think:
 Once this DRAM-v run finishes, go back and delete the older DRAM-v run, as you will not need this anymore. Additionally,  the &> log_dramv_clustered_viruses_uniref.txt file in the last command is a log output that is from the linux ecosystem. DRAM-v now outputs a log file so you do not necessarily need that - however I like to include just in case.
 
 With the final distill command, you get an output table called “amg_summary.tsv” that has all of the AMG information you will need for AMG analyses. This will give you AMGs that have their own categories (as labeled in the DRAM manuscript). We usually take AMGs that are categories 1-3, and remove those that are categories 4-5. However, another thing to watch out for is transposons. For these putative AMGs, make sure that they are not labeled with the “T” flag and “F” flags, as these are less likely to be viral - and even more so the “genome” itself is possibly not viral. If you have multiple AMGs per viral genome, it is critical that you go to the annotations and manually confirm again that it is, in fact, a viral genome. Usually when there are more than 3 AMGs within a single viral genome, I consider this slightly suspect. You can manually confirm these are viral by looking for viral-like genes within the annotations like the Sullivan Lab SOP mentions. I mention this because sometimes high confidence ‘keep’ labeled viral genomes end up in the post-qc steps and have no indication of being viral.
@@ -248,6 +250,8 @@ The vContact2 file contains every single viral genome you gave as input, as well
 
 This is quite tedious to do manually, and so now that you have vContact2 run and the output file we can work on parsing it with the script. Open the output file “genome_by_genome_overview.csv”. Add in a second column right after the “Genome” column named “genome_category”. Then, filter everything in the “Genome” column that has “this_study” in its header name (these correspond to the sequences that we input into the database) and populate the cells in the new column as “this_study”. Now, filter everything that is NOT in your study, and populate the cells in the new column as “refseq_genome”. Once this is done, you can run the actual parser:
 
+[vContact2 Parser Script](/7.Viruses/vcontact2_parser_v2.py)
+
 ```
 vContact2_parser_v2.py -i genome_by_genome_overview.csv -o parsed_genome_by_genome_overview.csv
 ```
@@ -277,12 +281,18 @@ samtools sort -@ 15 -o mapped_95id_sorted.bam mapped_95id.bam
 
 Next, we’ll use two coverM commands to determine coverage which can be used to calculate relative abundance. Given vMAGs are viral contigs, coverM contig mode is applied with two commands. First, --min-covered-fraction 75 and next followed by -m reads_per_base to calculate coverage. Similar to requirements set for MAGs, here vMAGs must have a minimum covered fraction >75% to be considered present. Any sequences that do not meet this threshold should not be considered in the second output using reads_per_based. Coverage values can then be calculated from the reads per base output x 151 bp. It is also important to consider your depth cut off here, generally 1-3x is acceptable to be considered ‘present’.
 
-Since you often map many reads instead of just one pair, it’s useful to use the linux wildcard “ * “ to tell coverM to consider all files that end with the same suffix, which in this case is “__95id_sorted.bam”. 
+Since you often map many reads instead of just one pair, it’s useful to use the linux wildcard “ * “ to tell coverM to consider all files that end with the same suffix, which in this case is “__97_sorted.bam”. 
 
 ```
-coverm contig --bam-files *_95id_sorted.bam -m covered_fraction -t 15 --min-covered-fraction 75 &> coverM_covered_fraction_75_clusteredviruses.txt
+# output reads_per_base
+coverm contig --proper-pairs-only--bam-files *_97_sorted.bam -t 15 --min-read-percent-identity-pair 0.97 --min-covered-fraction 0 -m reads_per_base --output-file coverm_reads_per_base.txt &> reads_per_base_stats.txt
 
-coverm contig --bam-files *_95id_sorted.bam -m reads_per_base -t 15 &> coverm_reads-per-base_clustered.txt
+# output contigs with min-covered_fraction >0.75
+coverm contig --proper-pairs-only --bam-files *_95id_sorted.bam --min-read-percent-identity-pair 0.97 -m covered_fraction -t 15  --min-covered-fraction 75 --output-file coverm_min75.txt &> min75_stats.txt
+
+# output trimemd_mean
+coverm contig --proper-pairs-only --bam-files *_97_sorted.bam --min-read-percent-identity-pair 0.97 -m trimmed_mean -t 15 
+--output-file coverm_trimmed_mean.txt &> trimmed_mean_stats.txt
 ```
 
 ### Step 9: Make a master spreadsheet
@@ -302,7 +312,7 @@ There are two main approaches that we use to make connections between a MAG and 
 #### Option 1: CRISPR-based host-virus inkages
 This method of making host-virus linkages depends upon your host MAG containing a CRISPR array. Unfortunately, CRISPR arrays are more commonly encoded and deployed in some ecosystems compared to others and therefore it may not be surprising if you don’t detect many (or any) CRISPR arrays in and across your MAGs. If this is the case, you’ll want to pair or substitute this approach with the consensus approaches (options 2 and 3).
 
-Why is this approach the strongest way to make host-virus linkages? CRISPR-Cas systems are often thought of as bacterial and archaeal immune systems. CRISPR works by recording memories of viral interactions by integrating small pieces of viral DNA as spacers within the hosts’ CRISPR array. Within the array, spacers are interspaced with identical repeat sequences and flanked by Cas (CRISPR-associated) genes. These saved memories help to protect the host against recurrent invasion by the same viral population by more rapidly identifying and degrading the invading nucleic acids from the virus. For our use, we can extract these spacers (which are incorporated snippets of viral DNA) and match them to our vMAGs. A great review paper to reference in understanding CRISPR is: https://www.annualreviews.org/doi/10.1146/annurev-ecolsys-121415-032428
+Why is this approach the strongest way to make host-virus linkages? CRISPR-Cas systems are often thought of as bacterial and archaeal immune systems. CRISPR works by recording memories of viral interactions by integrating small pieces of viral DNA as spacers within the hosts’ CRISPR array. Within the array, spacers are interspaced with identical repeat sequences and flanked by Cas (CRISPR-associated) genes. These saved memories help to protect the host against recurrent invasion by the same viral population by more rapidly identifying and degrading the invading nucleic acids from the virus. For our use, we can extract these spacers (which are incorporated snippets of viral DNA) and match them to our vMAGs. A great review paper to reference in understanding CRISPR can be found [here](https://www.annualreviews.org/doi/10.1146/annurev-ecolsys-121415-032428)
 
 The basic overview to making host-viral linkages vira CRISPR is:
  1. Identify CRISPR arrays within a MAG
