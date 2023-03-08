@@ -1,5 +1,3 @@
-# Workshop 7: Viruses
-
 ![ViralGitHub-01](https://user-images.githubusercontent.com/95941755/209015061-45c1a53f-e732-49f7-b5bb-c7b7cf1943d9.png)
 
 In this workshop, we will explain how to identify viral genomes (vMAGs) from metagenomic assemblies followed by dereplication, annotation, taxonomic classification, and mapping for coverage and relative abundance of recovered viral genomes. We will also cover how to make viral linkages using two main methods (CRISPR and consensus methods).
