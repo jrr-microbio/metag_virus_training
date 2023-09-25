@@ -109,7 +109,7 @@ and "checkv/contamination.tsv", and filter in a spreadsheet.
 #### Part 2: DRAMv annotation screening
 There are some genes that are common in both viruses and hosts (e.g.  Polyliposaccharides [LPS] related) and mobile element, which can cause false positives in the above "Keep2" category. Thus we want to be cautious with contigs with these genes. We have compiled a list of "suspicious" genes in this link. You can subset the DRAMv table using contigs in the "Keep2" category, and screen for the "suspicious" genes in the subset DRAMv table (ignore case, e.g. use "-i" option for "grep"),  and then put contigs with those genes in the “Manual check” category.
 
-#### Part 3: Manual Curation
+#### Part 3: Manual Curation (from Sullivan Lab SOP)
 
 For those in “manual check” category, you can look through their annotations in "dramv-annotate/annotations.tsv", in which each gene of every contig is a line and has annotation from multiple databases. This step is hard to standardize, but below are some criteria based on our experience.
 
