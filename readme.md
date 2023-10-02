@@ -14,7 +14,7 @@ Important: VirSorter2 can also be used with metaT data to identify RNA viruses, 
 This step helps in downstream analyses as identified viral genomes will already be named with the sample that they originated from. This has likely been done in previous steps, but if not, use a sed command to do so:
 
 ```
-sed ‘s/>/>new-name/’ assembly.fa > named-assembly.fa
+sed 's/>/>new-name/' assembly.fa > named-assembly.fa
 ```
 
 Sed commands are very useful and have many options. Here, we are using it to rename the contigs within the assembly. We first call sed and then provide the specific options which are within the ‘ ‘ and delimited by /. The s option (substitution) tells sed that we would like to find [x] and replace it with [z]. In this example scenario, the command would be: sed ‘s/x/z/’. Finally, we tell sed which file to act upon and specify that we want to write this output to a new file using >.  
