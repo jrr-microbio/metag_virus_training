@@ -270,12 +270,12 @@ bbmap.sh in1=R1_All_trimmed.fastq in2=R2_All_trimmed.fastq ref=FINAL_all78metaG_
 
 The above command should always be run as a bash script and submitted to slurm. The above command tells bbmap that we would like to map trimmed reads (in1= and in2=) to our reference file of concatenated viruses (ref=). Of course, mapped.sam is our output (out=) and I am requesting this job to be run on 30 processors (threads=).
 
-As with any mapping job, we next want to convert our sam file to a bam file. Reminder: sam files are large and can be deleted after conversion to a bam file. Bam your sams! The ‘@’ symbol in the below command designates processors.Then, we filter for minID of 95% using the reformat command and finally sort our sam file again using samtools.
+As with any mapping job, we next want to convert our sam file to a bam file. Reminder: sam files are large and can be deleted after conversion to a bam file. Bam your sams! The ‘@’ symbol in the below command designates processors.Then, we filter for minID of 97% using the reformat command and finally sort our sam file again using samtools.
 
 ```
 samtools view -@ 30 -bS mapped.sam > mapped.bam
-reformat.sh in=mapped.bam out=mapped_95id.bam minidfilter=0.95 primaryonly=t pairedonly=t
-samtools sort -@ 15 -o mapped_95id_sorted.bam mapped_95id.bam
+reformat.sh in=mapped.bam out=mapped_97id.bam minidfilter=0.97 primaryonly=t pairedonly=t
+samtools sort -@ 15 -o mapped_97id_sorted.bam mapped_97id.bam
 ```
 
 Next, we’ll use two coverM commands to determine coverage which can be used to calculate relative abundance. Given vMAGs are viral contigs, coverM contig mode is applied with two commands. First, --min-covered-fraction 75 and next followed by -m reads_per_base to calculate coverage. Similar to requirements set for MAGs, here vMAGs must have a minimum covered fraction >75% to be considered present. Any sequences that do not meet this threshold should not be considered in the second output using reads_per_based. Coverage values can then be calculated from the reads per base output x 151 bp. It is also important to consider your depth cut off here, generally 1-3x is acceptable to be considered ‘present’.
@@ -287,7 +287,7 @@ Since you often map many reads instead of just one pair, it’s useful to use th
 coverm contig --proper-pairs-only--bam-files *_97_sorted.bam -t 15 --min-read-percent-identity-pair 0.97 --min-covered-fraction 0 -m reads_per_base --output-file coverm_reads_per_base.txt &> reads_per_base_stats.txt
 
 # output contigs with min-covered_fraction >0.75
-coverm contig --proper-pairs-only --bam-files *_95id_sorted.bam --min-read-percent-identity-pair 0.97 -m covered_fraction -t 15  --min-covered-fraction 75 --output-file coverm_min75.txt &> min75_stats.txt
+coverm contig --proper-pairs-only --bam-files *_97id_sorted.bam --min-read-percent-identity-pair 0.97 -m covered_fraction -t 15  --min-covered-fraction 75 --output-file coverm_min75.txt &> min75_stats.txt
 
 # output trimemd_mean
 coverm contig --proper-pairs-only --bam-files *_97_sorted.bam --min-read-percent-identity-pair 0.97 -m trimmed_mean -t 15 
