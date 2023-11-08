@@ -25,7 +25,8 @@ Sed commands are very useful and have many options. Here, we are using it to ren
 Viral genomes can be challenging to confidently identify from contigs, so to increase the likelihood that genomes we recover are viral we want to run VirSorter2 on relatively long contigs. Therefore, we’ll first pull contigs that are at least 10kbp from our assemblies using [pullseq](https://github.com/bcthomas/pullseq):
 
 ```
-pullseq.py -i contigs.fa -m 10000 -o contigs_10000.fa
+seqkit seq -m 10000 asssembly.contigs.fa > output_final.contigs_10kb.fa
+
 ```
 
 In this command, we give pullseq our input assembly (-i contigs.fa) and require a minimum length of 10,000bp (-m 10000) and then write this to a new file (-o contigs_10000.fa). This is the file that you will provide VirSorter in the next step.
