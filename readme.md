@@ -25,7 +25,7 @@ Sed commands are very useful and have many options. Here, we are using it to ren
 Viral genomes can be challenging to confidently identify from contigs, so to increase the likelihood that genomes we recover are viral we want to run VirSorter2 on relatively long contigs. Therefore, we’ll first pull contigs that are at least 10kbp from our assemblies using [pullseq](https://github.com/bcthomas/pullseq):
 
 ```
-seqkit seq -m 10000 asssembly.contigs.fa > output_final.contigs_10kb.fa
+seqkit seq -m 10000 named-assembly.fa > output_final.contigs_10kb.fa
 
 ```
 
@@ -53,7 +53,7 @@ The first step is to run VirSorter2:
 
 ```
 source /opt/Miniconda2/miniconda2/bin/activate virsorter2
-virsorter run --keep-original-seq -i 5seq.fa -w vs2-pass1 --include-groups dsDNAphage,ssDNA --min-length 10000 --min-score 0.5 -j 15 all
+virsorter run --keep-original-seq -i output_final.contigs_10kb.fa -w vs2-pass1 --include-groups dsDNAphage,ssDNA --min-length 10000 --min-score 0.5 -j 15 all
 ```
 
 Now that we have the first pass of VirSorter2 run, we QC the viruses with checkV:
