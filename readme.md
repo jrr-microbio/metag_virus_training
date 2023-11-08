@@ -90,7 +90,7 @@ DRAM-v.py distill -i dramv-annotate/annotations.tsv -o dramv-distill
 How might size and quality of metagenomes influence the recovery of vMAGs in this step?
 Though we recommend using 10kb contigs, in some scenarios you may also want to consider including contigs >5kb, especially after the first Virsorter2 pass since CheckV can sometimes over-trim potential phage.
 
-After we have annotated and have all of our files, we need to manually curate our database to only true viral genomes. The steps are described in the Sullivan SOP as well, but they are here for clarity:
+After we have annotated and have all of our files, we need to manually curate our database to only true viral genomes. The steps are described in the Sullivan SOP as well (https://www.protocols.io/view/viral-sequence-identification-sop-with-virsorter2-5qpvoyqebg4o/v3), but they are here for clarity:
 
 
 ### Step 4: Manual curation of viral contigs
