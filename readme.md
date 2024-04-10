@@ -251,6 +251,7 @@ This is quite tedious to do manually, and so now that you have vContact2 run and
 
 [vContact2 Parser Script](/7.Viruses/vcontact2_parser_v2.py)
 
+NOTE: If you are using this for advanced usage, in which you added more genomes from your dataset so that you could get some inferences as to the biogeography for your viruses (i.e., who they cluster to and where they are from), instead of just writing "refseq_genome" to everything not from your study, you will want to just specify what each virus is (i.e., what study its from, or where it is located, or ...). The Auto-VC categorizer will parse your file and include all of those.
 ```
 vContact2_parser_v2.py -i genome_by_genome_overview.csv -o parsed_genome_by_genome_overview.csv
 ```
