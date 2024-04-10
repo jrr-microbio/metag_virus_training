@@ -249,7 +249,7 @@ The vContact2 file contains every single viral genome you gave as input, as well
 
 This is quite tedious to do manually, and so now that you have vContact2 run and the output file we can work on parsing it with the script. Open the output file “genome_by_genome_overview.csv”. Add in a second column right after the “Genome” column named “genome_category”. Then, filter everything in the “Genome” column that has “this_study” in its header name (these correspond to the sequences that we input into the database) and populate the cells in the new column as “this_study”. Now, filter everything that is NOT in your study, and populate the cells in the new column as “refseq_genome”. Once this is done, you can run the actual parser:
 
-[vContact2 Parser Script](/jrr-microbio/metag_virus_training/blob/main/vcontact2_parser_v3.py)
+[vContact2 Parser Script](./vcontact2_parser_v3.py)
 
 NOTE: If you are using this for advanced usage, in which you added more genomes from your dataset so that you could get some inferences as to the biogeography for your viruses (i.e., who they cluster to and where they are from), instead of just writing "refseq_genome" to everything not from your study, you will want to just specify what each virus is (i.e., what study its from, or where it is located, or ...). The Auto-VC categorizer will parse your file and include all of those.
 ```
